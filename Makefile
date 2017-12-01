@@ -6,7 +6,7 @@ deploy: Hydat.sqlite3
 	cf push "$(CF_APP)"
 
 Hydat.sqlite3.zip:
-	wget -O $@ "$(HYDAT_ZIP_URL)"
+	wget -O $@ --progress=dot:mega "$(HYDAT_ZIP_URL)"
 
 Hydat.sqlite3: Hydat.sqlite3.zip
 	unzip $<
