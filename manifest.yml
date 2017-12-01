@@ -1,4 +1,4 @@
 applications:
-- name: node-hello-world
-  memory: 128M
-  buildpack: sdk-for-nodejs
+- name: hydat-datasette
+  memory: 256M
+  buildpack: python_buildpack
