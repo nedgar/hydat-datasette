@@ -4,5 +4,4 @@ applications:
   buildpack: python_buildpack
   disk_quota: 1500M
   timeout: 180
-  
-  
+  command: exec make run-server
