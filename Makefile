@@ -8,7 +8,7 @@ Hydat.sqlite3: Hydat.sqlite3.zip
 
 build: Hydat.sqlite3.zip
 
-deploy: Hydat.sqlite3
+deploy:
 	cf push "$(CF_APP)"
 
 run-server: Hydat.sqlite3
