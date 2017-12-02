@@ -2,4 +2,7 @@ applications:
 - name: hydat-datasette
   memory: 256M
   buildpack: python_buildpack
-  disk_quota: 2048M
+  disk_quota: 1500M
+  timeout: 180
+  
+  
