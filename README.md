@@ -16,6 +16,11 @@ Runs on [IBM Cloud] (aka Bluemix).
 
 ## Examples
 
+### DB date and format version
+```
+select * from Version
+```
+
 ### Stations on the Ottawa River (aka Rivière des Outaouais)
 ```
 select STATION_NUMBER, STATION_NAME, LATITUDE, LONGITUDE, HYD_STATUS, REAL_TIME, DRAINAGE_AREA_GROSS
@@ -33,20 +38,30 @@ and S.STATION_NUMBER = R.STATION_NUMBER and R.REMARK_TYPE_CODE = C.REMARK_TYPE_C
 order by S.STATION_NUMBER, YEAR, REMARK_TYPE_EN
 ```
 
+### Changes in regulation regime for Ottawa River stations
+```
+select S.STATION_NUMBER, S.STATION_NAME, R.*
+from STATIONS S, STN_REGULATION R
+where (S.STATION_NAME like '%OTTAWA RIVER%' or S.STATION_NAME like '%OUTAOUAIS (RIVIERE DES)%') 
+and S.STATION_NUMBER = R.STATION_NUMBER
+order by S.STATION_NUMBER
+```
+Spoiler: Shows most are regulated.
+
 ### Info on types of data collected over time for a particular station (simple)
 ```
 select * from STN_DATA_COLLECTION
 where STATION_NUMBER = '02KF005'
-order by YEAR_FROM, DATA_TYPE
+order by DATA_TYPE, YEAR_FROM
 ```
 
 ### Info on types of data collected over time for a particular station (elaborated)
 ```
-select SD.STATION_NUMBER, SD.YEAR_FROM, SD.YEAR_TO, SD.DATA_TYPE, T.DATA_TYPE_EN, SD.MEASUREMENT_CODE, M.MEASUREMENT_EN, SD.OPERATION_CODE, O.OPERATION_EN
+select SD.STATION_NUMBER, SD.DATA_TYPE, T.DATA_TYPE_EN, SD.YEAR_FROM, SD.YEAR_TO, SD.MEASUREMENT_CODE, M.MEASUREMENT_EN, SD.OPERATION_CODE, O.OPERATION_EN
 from STN_DATA_COLLECTION SD, DATA_TYPES T, MEASUREMENT_CODES M, OPERATION_CODES O
 where SD.DATA_TYPE = T.DATA_TYPE and SD.MEASUREMENT_CODE = M.MEASUREMENT_CODE and SD.OPERATION_CODE = O.OPERATION_CODE
 and SD.STATION_NUMBER = '02KF005'
-order by SD.YEAR_FROM, SD.DATA_TYPE
+order by SD.DATA_TYPE, SD.YEAR_FROM
 ```
 
 ### Annual summary stats for water level at a particular station
@@ -64,3 +79,26 @@ from ANNUAL_STATISTICS
 where STATION_NUMBER = '02KF005' and DATA_TYPE='Q'
 order by YEAR
 ```
+
+### Daily water level at a particular station
+```
+select *
+from DLY_LEVELS
+where STATION_NUMBER = '02KF005' and YEAR >= 1950
+order by YEAR, MONTH
+```
+Note that the daily water level and flow data is de-normalized, with one month per row and separate columns for each day in month plus their data symbols.
+
+### Daily flow rate at a particular station
+```
+select * from DLY_FLOWS
+where STATION_NUMBER = '02KF005' and YEAR >= 1950
+order by YEAR, MONTH
+```
+
+### Symbols used to indicate partial / anomolous data in readings
+```
+select * from DATA_SYMBOLS order by SYMBOL_ID
+```
+Spoiler: `A` indicates `Partial Day`, `E` indicates `Estimated`.
+
