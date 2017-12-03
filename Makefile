@@ -12,4 +12,4 @@ deploy:
 	cf push "$(CF_APP)"
 
 run-server: Hydat.sqlite3
-	exec datasette serve -h $(VCAP_APP_HOST) -p $(VCAP_APP_PORT) $<
+	exec datasette serve -h $(VCAP_APP_HOST) -p $(VCAP_APP_PORT) -m metadata.json $<
