@@ -64,6 +64,15 @@ and SD.STATION_NUMBER = '02KF005'
 order by SD.DATA_TYPE, SD.YEAR_FROM
 ```
 
+### Info on types of data collected over time for Ottawa River stations (elaborated)
+```
+select S.STATION_NUMBER, S.STATION_NAME, C.*, T.DATA_TYPE_EN, M.MEASUREMENT_EN, O.OPERATION_EN
+from STATIONS S, STN_DATA_COLLECTION C, DATA_TYPES T, MEASUREMENT_CODES M, OPERATION_CODES O
+where (S.STATION_NAME like '%OTTAWA RIVER%' or S.STATION_NAME like '%OUTAOUAIS (RIVIERE DES)%') 
+and S.STATION_NUMBER = C.STATION_NUMBER and C.DATA_TYPE = T.DATA_TYPE and C.MEASUREMENT_CODE = M.MEASUREMENT_CODE and C.OPERATION_CODE = O.OPERATION_CODE
+order by S.STATION_NUMBER, C.DATA_TYPE, C.YEAR_FROM
+```
+
 ### Annual summary stats for water level at a particular station
 ```
 select *
@@ -78,6 +87,13 @@ select *
 from ANNUAL_STATISTICS
 where STATION_NUMBER = '02KF005' and DATA_TYPE='Q'
 order by YEAR
+```
+
+### Annual peaks (highs and lows) at a particular station and when they occurred:
+```
+select P.*, C.PRECISION_EN from ANNUAL_INSTANT_PEAKS P, PRECISION_CODES C
+where STATION_NUMBER = '02KF005' and P.PRECISION_CODE = C.PRECISION_CODE
+order by DATA_TYPE, YEAR
 ```
 
 ### Daily water level at a particular station
