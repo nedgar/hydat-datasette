@@ -1,1 +1,3 @@
 launchConfigurations/
+
+*.sqlite3
