@@ -1,5 +1,7 @@
 default: build
 
+HYDAT_ZIP_URL = http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/Hydat_sqlite3_20180117.zip
+
 Hydat.sqlite3.zip:
 	wget -O $@ --progress=dot:mega "$(HYDAT_ZIP_URL)"
 
