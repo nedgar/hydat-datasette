@@ -6,22 +6,21 @@ Spins up a [datasette] server on Environment Canada's [HYDAT] database to
 enable interactive SQL queries for historical hydrometrics data.  
 Details on the HYDAT DB schema are available here: [HYDAT schema].
 
-Runs on [IBM Cloud] (aka Bluemix).
+[Running on IBM Cloud](https://hydat-datasette.mybluemix.net/Hydat).
 
 [datasette]: https://simonwillison.net/2017/Nov/13/datasette/
 [HYDAT]: https://wateroffice.ec.gc.ca/
 [HYDAT schema]: http://collaboration.cmc.ec.gc.ca/cmc/hydrometrics/www/HYDAT_Definition_EN.pdf
-[IBM Cloud]: https://bluemix.net
 
 
 ## Examples
 
-### DB date and format version
+### DB date and format version [(run it)](https://hydat-datasette.mybluemix.net/Hydat-b1a09d3?sql=select+*+from+Version)
 ```
 select * from Version
 ```
 
-### Stations on the Ottawa River (aka Rivière des Outaouais)
+### Stations on the Ottawa River (aka Rivière des Outaouais) [(run it)](https://hydat-datasette.mybluemix.net/Hydat-b1a09d3?sql=select+STATION_NUMBER%2C+STATION_NAME%2C+LATITUDE%2C+LONGITUDE%2C+HYD_STATUS%2C+REAL_TIME%2C+DRAINAGE_AREA_GROSS%0D%0Afrom+STATIONS%0D%0Awhere+%28STATION_NAME+like+%27%25OTTAWA+RIVER%25%27+or+STATION_NAME+like+%27%25OUTAOUAIS+%28RIVIERE+DES%29%25%27%29+%0D%0Aorder+by+STATION_NUMBER)
 ```
 select STATION_NUMBER, STATION_NAME, LATITUDE, LONGITUDE, HYD_STATUS, REAL_TIME, DRAINAGE_AREA_GROSS
 from STATIONS
@@ -29,7 +28,7 @@ where (STATION_NAME like '%OTTAWA RIVER%' or STATION_NAME like '%OUTAOUAIS (RIVI
 order by STATION_NUMBER
 ```
 
-### Comments on Ottawa River stations
+### Comments on Ottawa River stations [(run it)](https://hydat-datasette.mybluemix.net/Hydat-b1a09d3?sql=select+S.STATION_NUMBER%2C+S.STATION_NAME%2C+YEAR%2C+REMARK_TYPE_EN%2C+REMARK_EN%0D%0Afrom+STATIONS+S%2C+STN_REMARKS+R%2C+STN_REMARK_CODES+C+%0D%0Awhere+%28S.STATION_NAME+like+%27%25OTTAWA+RIVER%25%27+or+S.STATION_NAME+like+%27%25OUTAOUAIS+%28RIVIERE+DES%29%25%27%29+%0D%0Aand+S.STATION_NUMBER+%3D+R.STATION_NUMBER+and+R.REMARK_TYPE_CODE+%3D+C.REMARK_TYPE_CODE+%0D%0Aorder+by+S.STATION_NUMBER%2C+YEAR%2C+REMARK_TYPE_EN)
 ```
 select S.STATION_NUMBER, S.STATION_NAME, YEAR, REMARK_TYPE_EN, REMARK_EN
 from STATIONS S, STN_REMARKS R, STN_REMARK_CODES C 
